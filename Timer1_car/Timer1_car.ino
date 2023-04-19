@@ -1,4 +1,5 @@
 #include <TimerOne.h>
+#include "pitches.h"
 
 // 기본 모터 & IR 핀
 
@@ -63,6 +64,22 @@ unsigned long debounceDelay = 50;
 int photo = A7;
 int photoData;
 
+// buzzer
+
+int melody[] = {
+  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+};
+
+int noteDurations[] = {
+  4, 8, 8, 4, 4, 4, 4, 4
+};
+
+const int buzzer = 7;
+
+int noteIndex = 0;
+unsigned long previousTime = 0;
+unsigned long noteDuration;
+
 // setup
 
 void setup() {
@@ -85,8 +102,9 @@ void setup() {
   Timer1.pwm(motor_A2, 0);
   Timer1.pwm(motor_B1, 0);
   Timer1.pwm(motor_B2, 0);
-
   Timer1.setPeriod(10);
+
+  pinMode(buzzer, OUTPUT);
 }
 
 void loop() {
@@ -120,6 +138,7 @@ void loop() {
   } else if (driveState == true && photoData < 50) {
     stop();
     ledOnOff();
+    toneMelody();
   } else if (driveState == false) {
     stop();
   }
@@ -264,5 +283,27 @@ void stop() {
 void ride_log() {
   if ((finishTime - startTime) > 100) {
     Serial.println((String)(finishTime - startTime) + " 동안 주행 하였음.");
+  }
+}
+
+void toneMelody(){
+  unsigned long currentTime = millis();
+
+  if (currentTime - previousTime >= noteDuration) {
+    int note = melody[noteIndex];
+    noteDuration = 1000 / noteDurations[noteIndex];
+
+    if (note != 0) {
+      tone(buzzer, note, noteDuration);
+    } else {
+      noTone(buzzer);
+    }
+
+    noteIndex++;
+    if (noteIndex >= sizeof(melody)/sizeof(melody[0])) {
+      noteIndex = 0;
+    }
+
+    previousTime = currentTime;
   }
 }
