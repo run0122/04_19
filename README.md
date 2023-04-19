@@ -13,4 +13,4 @@ Timer1.setPwmDuty를 더 자세히 설명하자면 여기서 duty값은 HIGH의 
 
 예를 들어 Timer1.setPwmDuty(LED, 511)라면 511 동안 HIGH를 유지하고 512(1023-511) 동안 LOW를 유지하는 LED Blink를 구현할 수 있습니다. 
 
-Timer1.setPwmDuty(LED, 900)이라면 900 동안 HIGH에 123 동안 LOW인 상태로 LED가 점멸할 것이고 이를 통해 LED의 밝기를 조절할 수 있습니다.
+Timer1.setPwmDuty(LED, 900)이라면 900 동안 HIGH에 123 동안 LOW인 상태로 LED가 점멸할 것입니다. 이를 통해 LED의 밝기를 조절할 수 있습니다.
