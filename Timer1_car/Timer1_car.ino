@@ -86,7 +86,7 @@ void setup() {
   Timer1.pwm(motor_B1, 0);
   Timer1.pwm(motor_B2, 0);
 
-  Timer1.setPeriod(100);
+  Timer1.setPeriod(10);
 }
 
 void loop() {
@@ -115,20 +115,15 @@ void loop() {
   // photo
   photoData = analogRead(photo);
 
-  // if (driveState == true && photoData > 100) {
-  //   drive();
-  // } else if (driveState == true && photoData < 100) {
-  //   stop();
-  // } else if (driveState == false) {
-  //   stop();
-  // }
-
-  if (driveState == true) {
+  if (driveState == true && photoData >= 50) {
     drive();
+  } else if (driveState == true && photoData < 50) {
+    stop();
+    ledOnOff();
   } else if (driveState == false) {
     stop();
   }
-
+  
   lastButtonState = reading;
 }
 
