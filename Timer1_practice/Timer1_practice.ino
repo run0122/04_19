@@ -6,8 +6,8 @@ void setup() {
   Timer1.initialize();
   Timer1.pwm(LED, 0);
 
-  Timer1.setPeriod(1000000);
-  Timer1.setPwmDuty(LED, 511);
+  Timer1.setPeriod(1000000/1000);
+  Timer1.setPwmDuty(LED, 900);
 }
 
 void loop() {
