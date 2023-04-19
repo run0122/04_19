@@ -1,9 +1,18 @@
+#include <TimerOne.h>
+
 // 기본 모터 & IR 핀
 
-const int motor_A1 = 5;
-const int motor_A2 = 6;
+// const int motor_A1 = 5;
+// const int motor_A2 = 6;
+// const int motor_B1 = 10;
+// const int motor_B2 = 11;
+
+const int motor_A1 = 9;
+const int motor_A2 = 8;
 const int motor_B1 = 10;
 const int motor_B2 = 11;
+
+
 const int IR_R = A1;
 const int IR_M = A3;
 const int IR_L = A5;
@@ -70,6 +79,14 @@ void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   pinMode(button, INPUT);
+
+  Timer1.initialize();
+  Timer1.pwm(motor_A1, 0);
+  Timer1.pwm(motor_A2, 0);
+  Timer1.pwm(motor_B1, 0);
+  Timer1.pwm(motor_B2, 0);
+
+  Timer1.setPeriod(100);
 }
 
 void loop() {
@@ -98,10 +115,16 @@ void loop() {
   // photo
   photoData = analogRead(photo);
 
-  if (driveState == true && photoData > 100) {
+  // if (driveState == true && photoData > 100) {
+  //   drive();
+  // } else if (driveState == true && photoData < 100) {
+  //   stop();
+  // } else if (driveState == false) {
+  //   stop();
+  // }
+
+  if (driveState == true) {
     drive();
-  } else if (driveState == true && photoData < 100) {
-    stop();
   } else if (driveState == false) {
     stop();
   }
@@ -146,7 +169,7 @@ void drive() {
     Serial.print(IR_M_data);
     Serial.print("-");
     Serial.println(IR_R_data);
-    Serial.println((String)"photoData : "+photoData);
+    Serial.println((String) "photoData : " + photoData);
   }
 
   if (IR_L_data == 0 and IR_M_data == 1 and IR_R_data == 0) {
@@ -189,58 +212,58 @@ void drive() {
 
 void right() {
   //우
-  digitalWrite(motor_A1, HIGH);
-  digitalWrite(motor_A2, LOW);
-  digitalWrite(motor_B1, LOW);
-  digitalWrite(motor_B2, LOW);
+  Timer1.setPwmDuty(motor_A1, 1023);
+  Timer1.setPwmDuty(motor_A2, 0);
+  Timer1.setPwmDuty(motor_B1, 0);
+  Timer1.setPwmDuty(motor_B2, 0);
 }
 
 void left() {
   //좌
-  digitalWrite(motor_A1, LOW);
-  digitalWrite(motor_A2, LOW);
-  digitalWrite(motor_B1, HIGH);
-  digitalWrite(motor_B2, LOW);
+  Timer1.setPwmDuty(motor_A1, 0);
+  Timer1.setPwmDuty(motor_A2, 0);
+  Timer1.setPwmDuty(motor_B1, 1023);
+  Timer1.setPwmDuty(motor_B2, 0);
 }
 
 void smooth_right() {
   //부드러운 우
-  analogWrite(motor_A1, 255);
-  analogWrite(motor_A2, 0);
-  analogWrite(motor_B1, 210);
-  analogWrite(motor_B2, 0);
+  Timer1.setPwmDuty(motor_A1, 1023);
+  Timer1.setPwmDuty(motor_A2, 0);
+  Timer1.setPwmDuty(motor_B1, 850);
+  Timer1.setPwmDuty(motor_B2, 0);
 }
 
 void smooth_left() {
   //부드러운 좌
-  analogWrite(motor_A1, 210);
-  analogWrite(motor_A2, 0);
-  analogWrite(motor_B1, 255);
-  analogWrite(motor_B2, 0);
+  Timer1.setPwmDuty(motor_A1, 850);
+  Timer1.setPwmDuty(motor_A2, 0);
+  Timer1.setPwmDuty(motor_B1, 1023);
+  Timer1.setPwmDuty(motor_B2, 0);
 }
 
 void forward() {
   //전진
-  digitalWrite(motor_A1, HIGH);
-  digitalWrite(motor_A2, LOW);
-  digitalWrite(motor_B1, HIGH);
-  digitalWrite(motor_B2, LOW);
+  Timer1.setPwmDuty(motor_A1, 1023);
+  Timer1.setPwmDuty(motor_A2, 0);
+  Timer1.setPwmDuty(motor_B1, 1023);
+  Timer1.setPwmDuty(motor_B2, 0);
 }
 
 void backward() {
   //후진
-  digitalWrite(motor_A1, LOW);
-  digitalWrite(motor_A2, HIGH);
-  digitalWrite(motor_B1, LOW);
-  digitalWrite(motor_B2, HIGH);
+  Timer1.setPwmDuty(motor_A1, 0);
+  Timer1.setPwmDuty(motor_A2, 1023);
+  Timer1.setPwmDuty(motor_B1, 0);
+  Timer1.setPwmDuty(motor_B2, 1023);
 }
 
 void stop() {
   //정지
-  digitalWrite(motor_A1, LOW);
-  digitalWrite(motor_A2, LOW);
-  digitalWrite(motor_B1, LOW);
-  digitalWrite(motor_B2, LOW);
+  Timer1.setPwmDuty(motor_A1, 0);
+  Timer1.setPwmDuty(motor_A2, 0);
+  Timer1.setPwmDuty(motor_B1, 0);
+  Timer1.setPwmDuty(motor_B2, 0);
 }
 
 void ride_log() {

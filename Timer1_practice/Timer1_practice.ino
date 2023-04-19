@@ -1,7 +1,6 @@
-/*
 #include <TimerOne.h>
 
-const int LED = 9;
+const int LED = 3;
 
 void setup() {
   Timer1.initialize();
@@ -16,8 +15,8 @@ void loop() {
     delay(1);
   }
 }
-*/
 
+/*
 #include <TimerOne.h>
 
 const int LED = 9;
@@ -33,3 +32,4 @@ void setup() {
 void loop() {
   
 }
+*/
